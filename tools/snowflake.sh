@@ -78,7 +78,7 @@ setup() {
 start_proxy() {
   cd $PROXYDIR
   echo $PROXYDIR
-  nohup ./proxy -ephemeral-ports-range 37000:37100 > $LOG_TO 2>&1 &
+  nohup ./proxy $@ > $LOG_TO 2>&1 &
   
 }
 
@@ -116,7 +116,7 @@ case $ACTION in
   "play")
     stop_proxy
     setup
-    start_proxy
+    start_proxy "${PARAMS[@]}"
     add_auto_start
     ;;
   "rm")
