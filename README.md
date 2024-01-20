@@ -35,7 +35,7 @@ From here on you can use the openweb bash command to install and control the sys
 
 #To update snowflake you can easily run
 ./openweb snowflake update
-./openweb snowflake play
+./openweb snowflake restart
 
 #To update this repository you have to use git
 git pull

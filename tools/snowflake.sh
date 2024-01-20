@@ -77,13 +77,31 @@ setup() {
 
 start_proxy() {
   cd $PROXYDIR
+  # Check if option h or help is used
+  if [[ " ${PARAMS[@]} " =~ " -h " ]] || [[ " ${PARAMS[@]} " =~ " --help " ]]; then
+    ./proxy $@
+    return
+  fi
+  # Check if already running
+  if is_running; then
+    echo "Tor Snowflake is already running"
+    return
+  fi
   echo "Starting Tor Snowflake"
   nohup ./proxy $@ > $LOG_TO 2>&1 &
 }
 
+is_running() {
+  if pidof proxy >/dev/null; then
+    return 0
+  else
+    return 1
+  fi
+}
+
 add_auto_start() {
   # Check if already added to cronjob
-  if crontab -l | grep -q "snowflake"; then
+  if crontab -l | grep -q "snowflake" > /dev/null; then
     remove_auto_start
   fi
   # Add to cronjob
@@ -93,7 +111,7 @@ add_auto_start() {
 
 remove_auto_start() {
   # Check if already added to cronjob
-  if ! crontab -l | grep -q "snowflake"; then
+  if ! crontab -l | grep -q "snowflake" > /dev/null; then
     echo "Tor Snowflake is not added to cronjob"
     return
   fi
@@ -102,9 +120,15 @@ remove_auto_start() {
 }
 
 stop_proxy() {
+  # Check if already running
+  if ! is_running; then
+    echo "Tor Snowflake is not running"
+    return
+  fi
   set +e
-  kill -9 $(pidof proxy)
+  kill -9 $(pidof proxy) > /dev/null 2>&1
   set -e
+  echo "Tor Snowflake is stopped"
 }
 
 case $ACTION in
@@ -112,15 +136,20 @@ case $ACTION in
     setup
     ;;
   "auto")
-    stop_proxy
     setup
     start_proxy "${PARAMS[@]}"
     add_auto_start "${PARAMS[@]}"
     ;;
   "play")
-    stop_proxy
     setup
     start_proxy "${PARAMS[@]}"
+    ;;
+  "restart")
+    stop_proxy
+    start_proxy "${PARAMS[@]}"
+    ;;
+  "stop")
+    stop_proxy
     ;;
   "rm")
     remove_auto_start
