@@ -33,7 +33,7 @@ install_go() {
   if [[ $VERSION -eq 1 ]]; then
     $OPENWEB_EXEC golang setup
   elif [[ $VERSION -eq 2 ]]; then
-    exit 1
+    $OPENWEB_EXEC golang update
   fi
 }
 

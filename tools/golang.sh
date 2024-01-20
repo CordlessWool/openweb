@@ -45,6 +45,11 @@ remove() {
 }
 
 update() {
+  ## Check if installed wiht this tool
+  if [ ! -d "$GODIR" ]; then
+    echo "Go is not installed with this tool"
+    return 1
+  fi
   remove
   install
 }
