@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+source ~/.profile
+
+ACTION=$1
+PARAMS=("${@:2}")
+
+export RUNDIR=~/.openweb/runtime
+export LOGDIR=~/.openweb/log
+export OPENWEB_PATH=$(dirname $(realpath $0))
+export OPENWEB_EXEC=$OPENWEB_PATH/openweb
+
+mkdir -p $LOGDIR
+mkdir -p $RUNDIR
+
+case $ACTION in
+  "golang")
+    $OPENWEB_PATH/tools/golang.sh "${PARAMS[@]}"
+    ;;
+  "snowflake")
+    $OPENWEB_PATH/tools/snowflake.sh "${PARAMS[@]}"
+    ;;
+esac
