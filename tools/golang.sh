@@ -5,6 +5,21 @@ ACTION=$1
 PARAMS=("${@:2}")
 GODIR=$RUNDIR/go
 
+help () {
+  echo "Usage: $OPENWEB_EXEC <action> [options]"
+  echo
+  echo "Actions:"
+  echo "  setup         Install Go"
+  echo "  rm            Remove Go"
+  echo "  update        Update Go"
+  echo "  version       Show Go version"
+  echo "  build         Build Go project"
+  echo
+  echo "Options:"
+  echo "  -h, --help    Show this help message"
+  echo
+}
+
 last_version(){
   ARCH=$(lscpu | grep Architecture | awk {'print $2'})
         case $(echo $ARCH) in
@@ -87,7 +102,7 @@ case $ACTION in
   "build")
     $GODIR/bin/go build $PARAMS
     ;;
-  "run")
-    $GODIR/bin/go $PARAMS
-    ;; 
+  *)
+    help
+    ;;
 esac

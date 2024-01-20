@@ -9,6 +9,26 @@ SNOWDIR=$RUNDIR/snowflake
 PROXYDIR=$SNOWDIR/proxy
 LOG_TO=$LOGDIR/openweb.log
 
+help() {
+  echo "Usage: $OPENWEB_EXEC snowflake <action> [options]"
+  echo
+  echo "Actions:"
+  echo "  setup         Install Tor Snowflake"
+  echo "  auto          Install and start Tor Snowflake on boot"
+  echo "  play          Start Tor Snowflake"
+  echo "  restart       Restart Tor Snowflake"
+  echo "  stop          Stop Tor Snowflake"
+  echo "  rm            Remove Tor Snowflake"
+  echo "  log           Show Tor Snowflake log"
+  echo "  update        Update Tor Snowflake"
+  echo
+  echo "Options:"
+  echo "  -h, --help    Show this help message"
+  echo
+}
+
+
+
 check_go_version() {
   # Check if go is installed and install if not and exit on wrong version
   if ! command -v go &> /dev/null
@@ -164,6 +184,9 @@ case $ACTION in
   "update")
     update_source
     build
+    ;;
+  *)
+    help
     ;;
 esac
 
