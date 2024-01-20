@@ -90,7 +90,7 @@ add_auto_start() {
   fi
   # Add to cronjob
   echo "Add Tor Snowflake to cronjob"
-  crontab -l | { cat; echo "@reboot $OPENWEB_EXEC snowflake play"; } | crontab -
+  crontab -l | { cat; echo "@reboot $OPENWEB_EXEC snowflake play $@"; } | crontab -
 }
 
 remove_auto_start() {
@@ -113,15 +113,23 @@ case $ACTION in
   "setup")
     setup
     ;;
+  "auto")
+    stop_proxy
+    setup
+    start_proxy "${PARAMS[@]}"
+    add_auto_start "${PARAMS[@]}"
+    ;;
   "play")
     stop_proxy
     setup
     start_proxy "${PARAMS[@]}"
-    add_auto_start
     ;;
   "rm")
     remove_auto_start
     remove
+    ;;
+  "log")
+    tail ${PARAMS[@]} $LOG_TO
     ;;
   "stop")
     stop_proxy
