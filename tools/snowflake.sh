@@ -5,7 +5,7 @@ set -e
 ACTION=$1
 PARAMS=("${@:2}")
 
-SNOWDIR=$RUNDIR/snowflake/
+SNOWDIR=$RUNDIR/snowflake
 PROXYDIR=$SNOWDIR/proxy
 LOG_TO=$LOGDIR/openweb.log
 
@@ -77,16 +77,14 @@ setup() {
 
 start_proxy() {
   cd $PROXYDIR
-  echo $PROXYDIR
+  echo "Starting Tor Snowflake"
   nohup ./proxy $@ > $LOG_TO 2>&1 &
-  
 }
 
 add_auto_start() {
   # Check if already added to cronjob
   if crontab -l | grep -q "snowflake"; then
-    echo "Tor Snowflake is already added to cronjob"
-    return
+    remove_auto_start
   fi
   # Add to cronjob
   echo "Add Tor Snowflake to cronjob"
