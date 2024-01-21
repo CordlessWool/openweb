@@ -15,11 +15,26 @@ export OPENWEB_EXEC=$OPENWEB_PATH/openweb
 mkdir -p $LOGDIR
 mkdir -p $RUNDIR
 
+help() {
+  echo "Usage: $OPENWEB_EXEC <action> [options]"
+  echo
+  echo "Actions:"
+  echo "  golang        Install Go"
+  echo "  snowflake     Install Tor Snowflake"
+  echo
+  echo "Options:"
+  echo "  -h, --help    Show this help message"
+  echo
+}
+
 case $ACTION in
   "golang")
     $OPENWEB_PATH/tools/golang.sh "${PARAMS[@]}"
     ;;
   "snowflake")
     $OPENWEB_PATH/tools/snowflake.sh "${PARAMS[@]}"
+    ;;
+  *)
+    help
     ;;
 esac
