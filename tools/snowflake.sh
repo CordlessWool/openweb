@@ -86,14 +86,18 @@ update_source() {
 }
 
 setup() {
-  # Check if already installed
-  if [ -d "$SNOWDIR" ]; then
-    return
+  
+  # Check if snowflake dir exists
+  if [ ! -d "$SNOWDIR" ]; then
+    echo "Loading Tor Snowflake"
+    load
   fi
-  echo "Setting up Tor Snowflake"
-  install_go
-  load
-  build
+  # Check if build already exists
+  if [ ! -f "$PROXYDIR/proxy" ]; then
+    echo "Building Tor Snowflake"
+    install_go
+    build
+  fi
 }
 
 start_proxy() {
