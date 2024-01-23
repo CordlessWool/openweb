@@ -26,8 +26,8 @@ last_version(){
     "aarch64")
       echo "$(curl -s https://go.dev/dl/ | awk -F[\>\<] '/linux-arm64/ && !/beta/ {print $5;exit}')"
       ;;
-    "arm6l")
-      echo "$(curl -s https://go.dev/dl/ | awk -F[\>\<] '/linux-arm6l/ && !/beta/ {print $5;exit}')"
+    "armv6l")
+      echo "$(curl -s https://go.dev/dl/ | awk -F[\>\<] '/linux-armv6l/ && !/beta/ {print $5;exit}')"
       ;;
     *)
       echo "Architecture $ARCH is currently not supported";
