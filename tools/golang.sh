@@ -29,8 +29,15 @@ last_version(){
     "armv6l")
       echo "$(curl -s https://go.dev/dl/ | awk -F[\>\<] '/linux-armv6l/ && !/beta/ {print $5;exit}')"
       ;;
+    "x86_64")
+      echo "$(curl -s https://go.dev/dl/ | awk -F[\>\<] '/linux-amd64/ && !/beta/ {print $5;exit}')"
+      ;;
+    "i686")
+      echo "$(curl -s https://go.dev/dl/ | awk -F[\>\<] '/linux-386/ && !/beta/ {print $5;exit}')"
+      ;;
     *)
       echo "Architecture $ARCH is currently not supported";
+      echo "Install go manually from https://golang.org/dl/"
       exit 1;
   esac
 }
