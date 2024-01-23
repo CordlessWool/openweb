@@ -52,6 +52,7 @@ install_go() {
   set -e
   if [[ $VERSION -eq 1 ]]; then
     $OPENWEB_EXEC golang setup
+    source ~/.profile
   elif [[ $VERSION -eq 2 ]]; then
     $OPENWEB_EXEC golang update
   fi
