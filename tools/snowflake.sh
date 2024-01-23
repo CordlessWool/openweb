@@ -27,8 +27,6 @@ help() {
   echo
 }
 
-
-
 check_go_version() {
   # Check if go is installed and install if not and exit on wrong version
   if ! command -v go &> /dev/null
@@ -44,16 +42,29 @@ check_go_version() {
   return
 }
 
+ask_ () {
+  # Ask for input
+  echo $1
+  read -p "$2 [y/N] " -r
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    return 1
+  fi
+}
+
 install_go() {
-  # Check if go is installed and install if not and exit on wrong version
+  # Check if go is installed and install if
   set +e
   check_go_version
   VERSION=$?
   set -e
   if [[ $VERSION -eq 1 ]]; then
+    ## ask to install go
+    ask_ "Go will be installed" "Do you want to continue?"
     $OPENWEB_EXEC golang setup
     source ~/.profile
   elif [[ $VERSION -eq 2 ]]; then
+    ## ask to update go
+    ask_ "Go will be updated. Update your self if not installed with OpenWeb" "Do you want to continue?"
     $OPENWEB_EXEC golang update
   fi
 }
@@ -85,10 +96,14 @@ update_source() {
   git pull
 }
 
+
+
 setup() {
-  
+ 
   # Check if snowflake dir exists
   if [ ! -d "$SNOWDIR" ]; then
+    # Ask before loading
+    ask_ "Tor Snowflake will be installed" "Do you want to continue?"
     echo "Loading Tor Snowflake"
     load
   fi
